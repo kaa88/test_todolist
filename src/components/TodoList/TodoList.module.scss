@@ -1,0 +1,28 @@
+@use "/src/styles/variables" as *;
+
+.wrapper {
+	margin: 0 auto;
+	width: 100%;
+	max-width: 500px;
+	background-color: #aaa;
+	font-size: 20px;
+}
+.newTask {
+	display: flex;
+	height: 50px;
+}
+.newTaskIcon {
+	width: 20px;
+	height: 20px;
+	fill: #fff;
+}
+.list {
+	min-height: 50px;
+	background-color: #ccc;
+}
+.actionBar {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	background-color: #eee;
+}

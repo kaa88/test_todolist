@@ -1,0 +1,40 @@
+@use "/src/styles/variables" as *;
+
+.default, .negative {
+	@include text-max-lines(2);
+	width: 100%;
+	max-width: rem(250);
+	height: rem(43);
+	padding: 0 rem(10);
+	border-radius: rem(45);
+	font-size: rem(16);
+	word-break: break-word;
+	user-select: none;
+	transition: background-color $timer-hover, color $timer-hover, fill $timer-hover;
+	@media print {
+		display: none;
+	}
+}
+.default {
+	background-color: var(--color-button-dark);
+	color: var(--color-button-dark-text);
+	fill: var(--color-button-dark-text);
+}
+.negative {
+	background-color: var(--color-button-light);
+	color: var(--color-button-dark);
+	fill: var(--color-button-dark);
+}
+
+// @media (min-width: $media-ts+1+px) { //?
+	.default:hover, .negative:hover {
+		background-color: var(--color-button-hover);
+		color: var(--color-button-dark-text);
+		fill: var(--color-button-dark-text);
+	}
+	.default:focus, .negative:focus {
+		background-color: var(--color-button-focus);
+		color: var(--color-button-dark-text);
+		fill: var(--color-button-dark-text);
+	}
+// }

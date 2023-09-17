@@ -1,0 +1,32 @@
+[
+	{
+		"id": 14,
+		"title": "Init React app",
+		"completed": true
+	},
+	{
+		"id": 15,
+		"title": "Create repository",
+		"completed": true
+	},
+	{
+		"id": 16,
+		"title": "Code",
+		"completed": false
+	},
+	{
+		"id": 17,
+		"title": "Run tests",
+		"completed": false
+	},
+	{
+		"id": 18,
+		"title": "Deploy",
+		"completed": false
+	},
+	{
+		"id": 19,
+		"title": "Get money",
+		"completed": false
+	}
+]
