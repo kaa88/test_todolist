@@ -1,0 +1,55 @@
+@use "/src/styles/variables" as *;
+
+.wrapper {
+	position: relative;
+	display: flex;
+	align-items: center;
+	background-color: var(--color-primary);
+	height: 50px;
+	cursor: text;
+	overflow: hidden;
+}
+.input {
+	flex-grow: 1;
+	position: relative;
+	z-index: 3;
+	height: 100%;
+	padding-left: $input-padding + 50 + px;
+	padding-right: $input-padding + 80 + px;
+	background-color: transparent;
+}
+.placeholder {
+	position: absolute;
+	top: 0;
+	left: $input-padding + 50 + px;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	color: var(--color-text-light);
+	opacity: 0;
+	transition: opacity $timer-hover;
+	&.visible {
+		opacity: 1;
+	}
+}
+.buttons {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 2;
+	width: 80px;
+	height: 100%;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	gap: 5px;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity $timer-hover, visibility $timer-hover;
+	&.visible {
+		opacity: 1;
+		visibility: visible;
+		z-index: 4;
+	}
+}

@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import classes from './TodoList.module.scss';
 import { fetchService } from '../../services/fetchService';
 import { ITask } from '../../types/types';
-import Task from '../ui/Task/Task';
-import Icon from '../ui/Icon/Icon';
+import Task from '../Task/Task';
+import NewTask from '../NewTask/NewTask';
 
 
 const TodoList = function() {
 
 	let [tasks, setTasks] = useState<ITask[]>()
 	let [isLoading, setIsLoading] = useState(true)
-	// console.log(tasks)
+	console.log(tasks)
 
 	async function fetchData() {
 		console.log('fetchData')
@@ -29,20 +29,30 @@ const TodoList = function() {
 		fetchData()
 	}, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-	function handleTaskChange(task: ITask) {
-		console.log(task)
+	function editTask(task: ITask) {
 		if (!tasks) return;
-		let newTasks = JSON.parse(JSON.stringify(tasks)) as ITask[]
 		let editedTaskIndex = tasks.findIndex((item) => item.id === task.id)
+		let newTasks = [...tasks]
 		newTasks[editedTaskIndex] = task
 		setTasks(newTasks)
 		fetchService.setTasks(newTasks)
 	}
 
-	function handleTaskDelete(id: number) {
+	function deleteTask(id: number) {
 		if (!tasks) return;
-		console.log('delete id: ', id)
 		let newTasks = tasks.filter((item) => item.id !== id)
+		setTasks(newTasks)
+		fetchService.setTasks(newTasks)
+	}
+
+	function createTask(value: string) {
+		if (!value) return;
+		let newTask = {
+			id: Date.now(),
+			title: value,
+			completed: false
+		}
+		let newTasks = tasks ? [...tasks, newTask] : [newTask]
 		setTasks(newTasks)
 		fetchService.setTasks(newTasks)
 	}
@@ -51,33 +61,32 @@ const TodoList = function() {
 		<Task
 			className={classes.task}
 			data={item}
-			onChange={handleTaskChange}
-			onDelete={handleTaskDelete}
+			onChange={editTask}
+			onDelete={deleteTask}
 			key={index}
 		/>
 	)
-	// taskList?.forEach(item => {
-	// 	console.log(item.props.data.title)
-	// })
+
+	function getTaskListContent() {
+		if (isLoading) return <p className={classes.message}>loading</p>
+		if (!taskList || !taskList.length) return <p className={classes.message}>no tasks to do</p>
+		return taskList
+	}
 
 	return (
-		<div className={classes.wrapper}>
+		<div className={classes.container}>
 			<div className={classes.header}>todos</div>
-			<div className={classes.box}>
-				<div className={classes.newTask}>
-					<Icon className={classes.newTaskIcon} name='icon-arrow-short' />
-					<input type="text" placeholder="What's need to be done?" />
-				</div>
-				<div className={classes.list}>
-					{isLoading
-						? <p>LOADING</p>
-						: taskList
-					}
-				</div>
-				<div className={classes.actionBar}>
-					<p>button</p>
-					<p>button</p>
-					<p>button</p>
+			<div className={classes.wrapper}>
+				<div className={classes.box}>
+					<NewTask callback={createTask} />
+					<div className={classes.list}>
+						{getTaskListContent()}
+					</div>
+					<div className={classes.actionBar}>
+						<p>button</p>
+						<p>button</p>
+						<p>button</p>
+					</div>
 				</div>
 			</div>
 		</div>

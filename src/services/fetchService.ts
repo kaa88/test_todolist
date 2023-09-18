@@ -5,11 +5,11 @@ const storageName = 'tasks'
 
 export const fetchService = { // fake fetcher
 	async setTasks(value: ITask[]) {
-		// await _wait()
+		await _wait()
 		setTasks(value)
 	},
 	async getTasks() {
-		// await _wait()
+		await _wait()
 		return getTasks()
 	}
 }

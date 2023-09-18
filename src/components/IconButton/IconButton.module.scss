@@ -1,0 +1,24 @@
+@use "/src/styles/variables" as *;
+
+.button {
+	width: 30px;
+	height: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	user-select: none;
+	background-color: transparent;
+	fill: var(--color-text-light);
+	transition: background-color $timer-hover, fill $timer-hover;
+	&:hover {
+		fill: var(--color-text-lighter);
+	}
+}
+.edit, .cancel {
+	width: 75%;
+	height: 75%;
+}
+.ok {
+	width: 100%;
+	height: 100%;
+}

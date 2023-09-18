@@ -1,0 +1,71 @@
+@use "/src/styles/variables" as *;
+
+.wrapper {
+	display: flex;
+	align-items: center;
+	background-color: var(--color-primary);
+	width: 100%;
+	height: 50px;
+	border-top: solid 1px var(--color-grayscale-04);
+	&.state_edit {
+		box-shadow: inset 0 0 3px 0 var(--color-shadow);
+	}
+}
+.state_active, .state_completed, .state_edit {
+	position: relative;
+}
+.state {
+	margin: 0 10px;
+	width: 30px;
+	height: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	border: solid 1px var(--color-grayscale-04);
+	cursor: pointer;
+}
+.stateIcon {
+	flex: 0 0 auto;
+	margin-top: 2px;
+	width: 70%;
+	height: 70%;
+	fill: var(--color-success);
+	opacity: 0;
+	transition: opacity $timer-hover;
+	.state_completed & {
+		opacity: 1;
+	}
+	.state_edit & {
+		pointer-events: none;
+	}
+}
+.actions {
+	width: 80px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+	// background-color: lime;
+	// opacity: 0;
+	// visibility: hidden;
+	// transition: opacity $timer-hover, visibility $timer-hover;
+}
+.content {
+	flex-grow: 1;
+	height: 100%;
+	padding: 0 $input-padding + px;
+	background-color: transparent;
+	.state_completed & {
+		color: var(--color-text-light);
+		text-decoration: line-through;
+	}
+	&:disabled {
+		user-select: none;
+	}
+}
+// .wrapper:hover .actions,
+// .state_edit .actions {
+// 	opacity: 1;
+// 	visibility: visible;
+// }
