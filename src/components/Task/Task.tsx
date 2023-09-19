@@ -3,6 +3,7 @@ import classes from './Task.module.scss';
 import Icon from '../Icon/Icon';
 import { ITask } from '../../types/types';
 import IconButton from '../IconButton/IconButton';
+import { transitionIsLocked } from '../../services/transitionLock';
 
 type TaskProps = {
 	className?: string
@@ -11,10 +12,10 @@ type TaskProps = {
 	onDelete?: (id: number) => void
 }
 
-const STATE_ACTIVE = 'active'
-const STATE_COMPLETED = 'completed'
-const STATE_EDIT = 'edit'
-const stateClassNamePrefix = 'state_'
+const STATE_ACTIVE = 'state_active'
+const STATE_COMPLETED = 'state_completed'
+const STATE_EDIT = 'state_edit'
+const lockTimeout = 200
 
 const Task = function({
 	className = '',
@@ -26,10 +27,6 @@ const Task = function({
 	const isCompleted = data.completed
 	let [isEdit, setIsEdit] = useState(false)
 
-	let stateClassName = isCompleted ? STATE_COMPLETED : STATE_ACTIVE
-	if (isEdit) stateClassName = STATE_EDIT
-	stateClassName = stateClassNamePrefix + stateClassName
-
 	const value = data.title
 	let [editableValue, setEditableValue] = useState(value)
 
@@ -38,7 +35,9 @@ const Task = function({
 	useEffect(() => {
 		if (inputFocused) {
 			setInputFocused(false)
-			inputRef.current.focus()
+			setTimeout(() => {
+				inputRef.current.focus()
+			}, 100)
 		}
 	}, [inputFocused])
 
@@ -49,15 +48,21 @@ const Task = function({
 		updateTask({isCompleted: isCompleted ? false : true})
 	}
 	function startEdit() {
-		console.log('edit')
+		if (transitionIsLocked(lockTimeout)) return;
 		setIsEdit(true)
 		setEditableValue(value)
 		setInputFocused(true)
 	}
 	function confirmEdit() {
+		if (transitionIsLocked(lockTimeout)) return;
 		setIsEdit(false)
 		let valueIsChanged = value === editableValue ? false : true
-		if (valueIsChanged) updateTask({isCompleted: false, value: editableValue})
+		if (valueIsChanged) updateTask({value: editableValue})
+	}
+	function cancelEdit() {
+		if (transitionIsLocked(lockTimeout)) return;
+		setIsEdit(false)
+		setEditableValue(value)
 	}
 	function updateTask(params: {isCompleted?: boolean, value?: string}) {
 		if (onChange) onChange({
@@ -67,14 +72,16 @@ const Task = function({
 		})
 	}
 	function deleteTask() {
+		if (transitionIsLocked(lockTimeout)) return;
 		if (onDelete) onDelete(data.id)
 	}
 	function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
-		if (e.key === 'Enter' || e.key === 'Escape') confirmEdit()
+		if (e.key === 'Enter') confirmEdit()
+		if (e.key === 'Escape') cancelEdit()
 	}
 
 	return (
-		<div className={`${className} ${classes.wrapper} ${classes[stateClassName]}`}>
+		<div className={`${className} ${classes.wrapper} ${isCompleted ? classes[STATE_COMPLETED] : classes[STATE_ACTIVE]} ${isEdit ? classes[STATE_EDIT] : ''}`}>
 			<div className={classes.state} onClick={changeState}>
 				<Icon className={classes.stateIcon} name='icon-ok' />
 			</div>
@@ -94,10 +101,13 @@ const Task = function({
 
 			<div className={classes.actions}>
 				{isEdit
-					?	<IconButton variant='ok' title='confirm' onClick={confirmEdit} />
+					?	<>
+							<IconButton className={classes.button} variant='ok' title='confirm' onClick={confirmEdit} />
+							<IconButton className={classes.button} variant='cancel' title='cancel' onClick={cancelEdit} />
+						</>
 					:	<>
-							<IconButton variant='edit' title='edit' onClick={startEdit} />
-							<IconButton variant='cancel' title='delete' onClick={deleteTask} />
+							<IconButton className={classes.button} variant='edit' title='edit' onClick={startEdit} />
+							<IconButton className={classes.button} variant='cancel' title='delete' onClick={deleteTask} />
 						</>
 				}
 			</div>

@@ -1,7 +1,7 @@
-import { ChangeEvent, ComponentPropsWithoutRef, KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, ComponentPropsWithoutRef, KeyboardEvent, useRef, useState } from 'react';
 import classes from './NewTask.module.scss';
-import Icon from '../Icon/Icon';
 import IconButton from '../IconButton/IconButton';
+import Icon from '../Icon/Icon';
 
 type NewTaskProps = ComponentPropsWithoutRef<'input'> & {
 	callback: (task: string) => void
@@ -47,6 +47,7 @@ const NewTask = function({
 
 	return (
 		<div className={classes.wrapper}>
+			<Icon className={classes.icon} name='icon-arrow-short' />
 			<input
 				className={classes.input}
 				type="text"

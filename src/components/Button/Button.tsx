@@ -2,18 +2,22 @@ import type { ComponentPropsWithoutRef } from 'react';
 import classes from './Button.module.scss';
 
 interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
-	modif?: 'default' | 'negative'
+	active?: boolean
 }
 
 const Button = function({
 	className = '',
-	modif = 'default',
 	children = 'button',
+	active = false,
 	...props
 }: ButtonProps) {
 
 	return (
-		<button className={`${className} ${classes[modif]}`} {...props}>
+		<button
+			className={`${className} ${classes.default} ${active ? classes.active : ''}`}
+			type='button'
+			{...props}
+		>
 			{children}
 		</button>
 	)

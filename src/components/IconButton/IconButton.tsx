@@ -16,7 +16,7 @@ const IconButton = function({className = '', variant, ...props}: ButtonProps) {
 	}
 
 	return (
-		<button className={`${className} ${classes.button}`} {...props}>
+		<button className={`${className} ${classes.button}`} type='button' {...props}>
 			{variants[variant]}
 		</button>
 	)

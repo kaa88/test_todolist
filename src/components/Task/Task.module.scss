@@ -15,6 +15,7 @@
 	position: relative;
 }
 .state {
+	flex-shrink: 0;
 	margin: 0 10px;
 	width: 30px;
 	height: 30px;
@@ -24,48 +25,51 @@
 	border-radius: 50%;
 	border: solid 1px var(--color-grayscale-04);
 	cursor: pointer;
+	.state_edit & {
+		pointer-events: none;
+	}
 }
 .stateIcon {
 	flex: 0 0 auto;
 	margin-top: 2px;
 	width: 70%;
 	height: 70%;
-	fill: var(--color-success);
+	fill: var(--color-grayscale-04);
 	opacity: 0;
-	transition: opacity $timer-hover;
-	.state_completed & {
+	transition: opacity $timer-hover, fill $timer-hover;
+	&:hover {
 		opacity: 1;
 	}
-	.state_edit & {
-		pointer-events: none;
+	.state_completed & {
+		opacity: 1;
+		fill: var(--color-success);
 	}
 }
 .actions {
 	width: 80px;
+	padding-right: 10px;
 	display: flex;
-	justify-content: center;
+	justify-content: flex-end;
 	align-items: center;
-	gap: 5px;
-	// background-color: lime;
-	// opacity: 0;
-	// visibility: hidden;
-	// transition: opacity $timer-hover, visibility $timer-hover;
+	gap: 10px;
+	.button {
+		width: 24px;
+		height: 24px;
+	}
 }
 .content {
 	flex-grow: 1;
+	min-width: 50px;
 	height: 100%;
 	padding: 0 $input-padding + px;
 	background-color: transparent;
-	.state_completed & {
-		color: var(--color-text-light);
-		text-decoration: line-through;
+	color: var(--color-text-light);
+	text-decoration: line-through;
+	.state_edit &, .state_active & {
+		color: var(--color-text-default);
+		text-decoration: none;
 	}
 	&:disabled {
 		user-select: none;
 	}
 }
-// .wrapper:hover .actions,
-// .state_edit .actions {
-// 	opacity: 1;
-// 	visibility: visible;
-// }
